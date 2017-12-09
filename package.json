@@ -1,0 +1,26 @@
+{
+  "name": "svc-streamstats",
+  "version": "0.0.1",
+  "description": "initial commit",
+  "main": "main.js",
+  "scripts": {
+    "test": "svctest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nagasen314/svc-streamstats.git"
+  },
+  "keywords": [
+    "twitch",
+    "fe"
+  ],
+  "author": "nagasen314",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/nagasen314/svc-streamstats/issues"
+  },
+  "homepage": "https://github.com/nagasen314/svc-streamstats#readme",
+  "dependencies": {
+    "tmi.js": "^1.2.1"
+  }
+}

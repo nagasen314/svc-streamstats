@@ -1,0 +1,6 @@
+html,body {
+	font-family: 'Roboto', sans-serif;
+	background-color: hsla(0, 0%, 12%, 1);
+	color: hsla(0, 0%, 100%, .95);
+	font-size: 24px;
+}
