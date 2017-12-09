@@ -7,6 +7,8 @@ var contents = fs.readFileSync('oauth.token', 'utf8');
 
 // vars
 var channel = "nagasen314";
+const util = require('util');
+
 var botname = "catriabot";
 
 // tmi options
@@ -35,12 +37,18 @@ client.on('connected', function(address, port) {
 });
 
 client.on("chat", function (channel, userstate, message, self) {
-    // Don't listen to my own messages...this isn't totally necessary but if you're going to do the below, not blocking this will create an infinite looping bug.
-    if (self) return;
+    var userComp = "#"+ userstate.username;
+    if(userComp.localeCompare(channel) === 0) {
+    client.action(channel,"Triggering Processor parsing method...");
+    return;
+  }
+  //client.action(channel,util.inspect(userstate, false, null));
+  //client.action(channel,userstate.username);
+  // Do your stuff.
+  if(message.indexOf(botname) > -1) {
+    client.action(channel, "I'm " + botname + "! nagasen314 is developing me as a hobby to support FE streamers. Repository at https://github.com/nagasen314/svc-streamstats.git");
+    return;
+  }   
 
-    // Do your stuff.
-    if(message.indexOf(botname) > -1) {
-      client.action(channel, "I'm " + botname + "! nagasen314 is developing me as a hobby to support FE streamers. Repository at https://github.com/nagasen314/svc-streamstats.git");
-    }
 });
 
