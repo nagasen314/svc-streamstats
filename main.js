@@ -1,6 +1,8 @@
 // Dependencies
 var fs = require('fs');
 var tmi = require('tmi.js');
+var Processor = require('./Processor.js');
+
 
 // tmi creation
 var contents = fs.readFileSync('oauth.token', 'utf8');
@@ -27,19 +29,33 @@ var options = {
   channels: [channel]
 };
 
+var p = new Processor("127.0.0.1",8888);
+
 var client = new tmi.client(options);
 client.connect();
 
 client.on('connected', function(address, port) {
   // You can mess with this to give your bot personality.
-  var onConnectMsg = "Why not me, Marth? Anyway, feel free to query me for FEStats(tm?!?).";
+  var onConnectMsg = "Why not me, Marth? Anyway, feel free to query me for FE stats. Supported commands: !stats.";
   client.action(channel,onConnectMsg);
 });
 
 client.on("chat", function (channel, userstate, message, self) {
-    var userComp = "#"+ userstate.username;
-    if(userComp.localeCompare(channel) === 0) {
-    client.action(channel,"Triggering Processor parsing method...");
+  var userComp = "#"+ userstate.username;
+  if(true) { //userComp.localeCompare(channel) === 0) {
+    //client.action(channel,"[DEBUG] Triggering Processor parsing method...");
+    var options = p.processChat(message);
+    if(options === "")
+      return;
+
+    var result = p.invokeApi(options, function(data) {
+      console.log(data);
+      delete data._id;
+      var outStr = "";
+      //console.log(options.api_path).
+      client.action(channel,"API Output: " + JSON.stringify(data));
+    });
+    
     return;
   }
   //client.action(channel,util.inspect(userstate, false, null));

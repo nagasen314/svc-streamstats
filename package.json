@@ -1,6 +1,6 @@
 {
   "name": "svc-streamstats",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "initial commit",
   "main": "main.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "fe"
   ],
   "author": "nagasen314",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/nagasen314/svc-streamstats/issues"
   },
