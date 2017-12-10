@@ -19,7 +19,7 @@ Processor.prototype.processChat = function(input) {
 
 Processor.prototype.invokeApi = function(options, callback) {
   var url = "http://" + this.hostname + ":" + this.port + "/api/" + options.api_path + "?id_char=" + options.id_char + "&id_game=" + options.id_game + "&subCat=growths";
-  console.log(url);
+  console.log("[DEBUG] URL: " + url);
   http.get(url, (res) => {
     const statusCode = res.statusCode;
     const contentType = res.headers['content-type'];
@@ -45,7 +45,7 @@ Processor.prototype.invokeApi = function(options, callback) {
     res.on('end', () => {
       try {
         const parsedData = JSON.parse(rawData);
-        console.log(parsedData);
+        console.log("[DEBUG] Data received: " + parsedData);
         callback(parsedData);
       } catch (e) {
         console.error(e.message);

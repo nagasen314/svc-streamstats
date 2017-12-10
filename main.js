@@ -2,7 +2,7 @@
 var fs = require('fs');
 var tmi = require('tmi.js');
 var Processor = require('./Processor.js');
-
+var Formatter = require('./Formatter.js');
 
 // tmi creation
 var contents = fs.readFileSync('oauth.token', 'utf8');
@@ -30,6 +30,7 @@ var options = {
 };
 
 var p = new Processor("127.0.0.1",8888);
+var f = new Formatter();
 
 var client = new tmi.client(options);
 client.connect();
@@ -49,11 +50,10 @@ client.on("chat", function (channel, userstate, message, self) {
       return;
 
     var result = p.invokeApi(options, function(data) {
-      console.log(data);
       delete data._id;
-      var outStr = "";
-      //console.log(options.api_path).
-      client.action(channel,"API Output: " + JSON.stringify(data));
+      var outStr = f.formatChat(options.api_path,data);
+
+      client.action(channel,outStr);//JSON.stringify(data));
     });
     
     return;
