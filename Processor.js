@@ -18,6 +18,7 @@ Processor.prototype.processChat = function(input) {
 };
 
 Processor.prototype.invokeApi = function(options, callback) {
+  // Need to dynamically add parameters to URL.
   var url = "http://" + this.hostname + ":" + this.port + "/api/" + options.api_path + "?id_char=" + options.id_char + "&id_game=" + options.id_game + "&subCat=growths";
   console.log("[DEBUG] URL: " + url);
   http.get(url, (res) => {
@@ -59,7 +60,7 @@ Processor.prototype.invokeApi = function(options, callback) {
 Processor.prototype.buildApi = function(arr) {
   // Parse array into API call
   var supportedCommands = ['!stats'];
-  var supportedGames = ['9','BR'];
+  var supportedGames = ['TRS'];
   if (arr.length === 4) {
     // If Command supported
     var commandLoc = supportedCommands.indexOf(arr[0]);
