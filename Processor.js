@@ -19,12 +19,28 @@ Processor.prototype.processChat = function(input) {
 
 Processor.prototype.invokeApi = function(options, callback) {
   // Need to dynamically add parameters to URL.
-  var url = "http://" + this.hostname + ":" + this.port + "/api/" + options.api_path + "?id_char=" + options.id_char + "&id_game=" + options.id_game + "&subCat=growths";
+  var url = "http://" + this.hostname + ":" + this.port + "/api/" + options.api_path + "?";
+  var lastKey = Object.keys(options)[Object.keys(options).length - 1];
+  console.log(options);
+  for(var key in options) {
+    if(key === "api_path")
+      continue;
+
+    url += key + "=" + options[key];
+    if(key === lastKey) {
+      continue;
+    }
+    url += "&";
+  }
   console.log("[DEBUG] URL: " + url);
+
+  // Make the request
   http.get(url, (res) => {
+    // Pull status code and content type
     const statusCode = res.statusCode;
     const contentType = res.headers['content-type'];
 
+    // Error out if response not 200
     var error;
     if (statusCode !== 200) {
       error = new Error('Request Failed.\n' +
@@ -40,6 +56,7 @@ Processor.prototype.invokeApi = function(options, callback) {
       return;
     }
 
+    // Chunking received data.
     res.setEncoding('utf8');
     var rawData = '';
     res.on('data', (chunk) => { rawData += chunk;});
@@ -59,7 +76,7 @@ Processor.prototype.invokeApi = function(options, callback) {
 
 Processor.prototype.buildApi = function(arr) {
   // Parse array into API call
-  var supportedCommands = ['!stats'];
+  var supportedCommands = ['!stats','!skills'];
   var supportedGames = ['TRS'];
   if (arr.length === 4) {
     // If Command supported
@@ -70,12 +87,29 @@ Processor.prototype.buildApi = function(arr) {
       // If game supported
       var gameLoc = supportedGames.indexOf(arr[1]);
       if(gameLoc > -1) {
-        return {
-          api_path: commandStr,
-          id_game: arr[1],
-          id_char: arr[2],
-          subCategory: arr[3]
-        };
+
+        //!stats id_game id_char growths
+        //!stats id_game id_char bases
+        if (commandStr.localeCompare("stats") === 0) {
+
+          return {
+            api_path: commandStr,
+            id_game: arr[1],
+            id_char: arr[2],
+            subCategory: arr[3]
+          };
+        }
+
+        //!skills id_game class id_class
+        //!skills id_game char id_char
+        if (commandStr.localeCompare("skills") === 0) {
+          return {
+            api_path: commandStr,
+            id_game: arr[1],
+            id_char: arr[3],
+            id_type: arr[2]
+          };         
+        }
       }
     }
   }

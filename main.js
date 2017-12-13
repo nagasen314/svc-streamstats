@@ -51,6 +51,7 @@ client.on("chat", function (channel, userstate, message, self) {
 
     var result = p.invokeApi(options, function(data) {
       delete data._id;
+      //console.log(data);
       var outStr = f.formatChat(options.api_path,data);
 
       client.action(channel,outStr);//JSON.stringify(data));
