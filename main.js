@@ -8,7 +8,7 @@ var Formatter = require('./Formatter.js');
 var contents = fs.readFileSync('oauth.token', 'utf8');
 
 // vars
-var channel = "nagasen314";
+var channel = "Smaepdii"; //"nagasen314";
 const util = require('util');
 
 var botname = "catriabot";
@@ -51,8 +51,15 @@ client.on("chat", function (channel, userstate, message, self) {
 
     var result = p.invokeApi(options, function(data) {
       delete data._id;
-      //console.log(data);
-      var outStr = f.formatChat(options.api_path,data);
+      console.log(data);
+      var ftype = "";
+      if(options.api_path === "stats") {
+        if(options.query_type === "growths")
+          ftype="%";
+        //if(options.query_type === "bases")
+        //  ftype="";
+      }
+      var outStr = f.formatChat(options.api_path,data,ftype);
 
       client.action(channel,outStr);//JSON.stringify(data));
     });

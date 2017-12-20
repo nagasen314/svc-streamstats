@@ -77,7 +77,7 @@ Processor.prototype.invokeApi = function(options, callback) {
 Processor.prototype.buildApi = function(arr) {
   // Parse array into API call
   var supportedCommands = ['!stats','!skills'];
-  var supportedGames = ['TRS'];
+  var supportedGames = ['TRS','10'];
   if (arr.length === 4) {
     // If Command supported
     var commandLoc = supportedCommands.indexOf(arr[0]);
@@ -96,7 +96,7 @@ Processor.prototype.buildApi = function(arr) {
             api_path: commandStr,
             id_game: arr[1],
             id_char: arr[2],
-            subCategory: arr[3]
+            query_type: arr[3]
           };
         }
 

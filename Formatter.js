@@ -4,11 +4,13 @@ var supportedGames = ['9','BR'];
 function Formatter() {
 }
 
-Formatter.prototype.formatChat = function(api_path,data) {
+Formatter.prototype.formatChat = function(api_path,data,ftype) {
   // process JSON into... other stuff here
   var ret = "";
   var lastKey = Object.keys(data)[Object.keys(data).length - 1];
 
+
+  // should break these out into smaller submodules
   // !stats
   if(api_path === "stats") {
     var first=1;
@@ -17,16 +19,20 @@ Formatter.prototype.formatChat = function(api_path,data) {
         ret += key + ": "
         if(first === 1) {
           first=0;
-          for(var i=0;i<data[key].length-1;i++) {
-            ret += data[key][i] + ", ";
+          if(typeof data[key] !== "string") {
+            for(var i=0;i<data[key].length-1;i++) {
+              ret += data[key][i] + ", ";
+            }
+            ret += data[key][i] + " | ";
           }
-          ret += data[key][i] + " | ";
+          else
+            ret += data[key] + " | ";
         }
         else if (key === lastKey) {
-          ret += data[key] + "%";
+          ret += data[key] + ftype;
         }
         else {
-          ret += data[key] + "% | ";
+          ret += data[key] + ftype + " | ";
         }
       }
     }
