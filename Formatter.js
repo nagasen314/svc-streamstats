@@ -1,5 +1,3 @@
-var supportedApi = ['stats'];
-var supportedGames = ['9','BR'];
 //Constructor
 function Formatter() {
 }
